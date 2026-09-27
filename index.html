@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Syfice</title>
+<meta name="description" content="Syfice Studio, Make binaries flexible.">
+<meta name="theme-color" content="#ffffff">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Syfice">
+<meta property="og:description" content="Syfice Studio, Make binaries flexible.">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="preload" as="font" type="font/ttf" href="fonts/Geologica-ExtraLight.ttf" crossorigin>
+<link rel="preload" as="font" type="font/ttf" href="fonts/Geologica-Black.ttf" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<a class="skip" href="#main">跳到主要内容</a>
+
+<!-- ============================ 导航 ============================ -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#top" aria-label="Syfice">
+      <img class="brand__mark" src="logo.png" alt="" width="30" height="30">
+      <span class="brand__word">Syfice</span>
+    </a>
+
+    <nav class="nav__links" aria-label="导航">
+      <a href="#products">Products</a>
+      <a href="#studio">Studio</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false" aria-controls="menu">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="menu" id="menu" hidden>
+  <nav class="menu__links" aria-label="移动导航">
+    <a href="#products"><em>01</em>Products</a>
+    <a href="#studio"><em>02</em>Studio</a>
+    <a href="#contact"><em>03</em>Contact</a>
+  </nav>
+  <div class="menu__foot">
+    <a href="mailto:hello@syfice.com">Make binaries flexible</a>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ============================ 首屏 ============================ -->
+<section class="hero" id="top">
+  <div class="hero__grid" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <div class="wrap hero__inner">
+    <span class="hero__est" data-reveal>Est. 2025</span>
+
+    <h1 class="hero__title">
+      <span class="line"><span class="line__in" data-reveal style="--d:0">Make</span></span>
+      <span class="line"><span class="line__in" data-reveal style="--d:1"><em data-magnetic>binaries</em></span></span>
+      <span class="line"><span class="line__in" data-reveal style="--d:2">flexible</span></span>
+    </h1>
+
+    <p class="hero__lede" data-reveal style="--d:3">
+      Syfice / Syφce
+    </p>
+  </div>
+</section>
+
+<!-- ============================ 产品 ============================ -->
+<section class="section" id="products">
+  <div class="wrap">
+    <header class="shead">
+      <h2 class="shead__title" data-reveal style="--d:1">Products</h2>
+    </header>
+
+    <ul class="prods">
+
+      <!-- 没有 href 的按钮就是地址还没给我，补上即可 -->
+      <!-- 技术栈标签：写在 .prod__meta 里的 .prod__stack 列表内，一项一个 li。
+           WMS / ExplodePaper 的栈还没确认，所以先不放这个列表，补的时候照抄 01 的结构。
+           注释里不写标签名，免得静态校验把示例当成真标签。 -->
+
+      <li class="prod" data-reveal>
+        <span class="prod__num">01</span>
+        <h3 class="prod__name">Cloudisk</h3>
+        <div class="prod__meta">
+          <p class="prod__desc">针对于不同环境下的网络储存需求，我们推出了云碟网盘</p>
+          <ul class="prod__stack">
+            <li>Vue</li>
+            <li>TypeScript</li>
+            <li>Cloudflare</li>
+          </ul>
+        </div>
+        <div class="prod__acts">
+          <a class="btn btn--sm" href="https://cloudisk.fyi" target="_blank" rel="noopener noreferrer"><span>网站</span></a>
+        </div>
+      </li>
+
+      <li class="prod" data-reveal>
+        <span class="prod__num">02</span>
+        <h3 class="prod__name">WMS</h3>
+        <div class="prod__meta">
+          <p class="prod__desc">智能仓库云管理系统</p>
+          <ul class="prod__stack">
+            <li>React</li>
+            <li>Hono</li>
+            <li>Cloudflare</li>
+          </ul>
+        </div>
+        <div class="prod__acts">
+          <a class="btn btn--sm" href="https://wms.ntoskrnl2333.cn" target="_blank" rel="noopener noreferrer"><span>网站</span></a>
+        </div>
+      </li>
+
+      <li class="prod" data-reveal>
+        <span class="prod__num">03</span>
+        <h3 class="prod__name">ExplodePaper</h3>
+        <div class="prod__meta">
+          <p class="prod__desc">文章生成工具</p>
+          <ul class="prod__stack">
+            <li>Vue</li>
+            <li>Python</li>
+          </ul>
+        </div>
+        <div class="prod__acts">
+          <a class="btn btn--sm" href="https://explodepaper.ntoskrnl2333.cn" target="_blank" rel="noopener noreferrer"><span>网站</span></a>
+        </div>
+      </li>
+
+      <li class="prod" data-reveal>
+        <span class="prod__num">04</span>
+        <h3 class="prod__name">Paster</h3>
+        <div class="prod__meta">
+          <p class="prod__desc">为羽间筑趣工作室定制的网站</p>
+          <ul class="prod__stack">
+            <li>ASP.NET Core</li>
+            <li>HTML</li>
+          </ul>
+        </div>
+        <div class="prod__acts">
+          <a class="btn btn--sm" href="https://paster-sy4ce.azurewebsites.net" target="_blank" rel="noopener noreferrer"><span>网站</span></a>
+          <a class="btn btn--sm btn--ghost" href="https://github.com/sy4ce/paster-webapp"><span>源码</span></a>
+        </div>
+      </li>
+
+      <li class="prod" data-reveal>
+        <span class="prod__num">05</span>
+        <h3 class="prod__name">SMSWatcher</h3>
+        <div class="prod__meta">
+          <p class="prod__desc">手机消息转发，随时随地查看验证码</p>
+          <ul class="prod__stack">
+            <li>Android</li>
+            <li>Java</li>
+          </ul>
+        </div>
+        <div class="prod__acts">
+          <a class="btn btn--sm" href="https://sms.ntoskrnl2333.cn"><span>网站</span></a>
+          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/SMS_Watcher_Android"><span>源码</span></a>
+        </div>
+      </li>
+
+      <li class="prod" data-reveal>
+        <span class="prod__num">06</span>
+        <h3 class="prod__name">enostorg</h3>
+        <div class="prod__meta">
+          <p class="prod__desc">储存管理系统</p>
+          <ul class="prod__stack">
+            <li>C++</li>
+            <li>CMake</li>
+          </ul>
+        </div>
+        <div class="prod__acts">
+          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/enostorg"><span>源码</span></a>
+        </div>
+      </li>
+
+      <li class="prod" data-reveal>
+        <span class="prod__num">07</span>
+        <h3 class="prod__name">LexicStrike</h3>
+        <div class="prod__meta">
+          <p class="prod__desc">在控制台上就能使用的单词翻译检测软件</p>
+          <ul class="prod__stack">
+            <li>C++</li>
+            <li>HTML</li>
+          </ul>
+        </div>
+        <div class="prod__acts">
+          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/LexicStrike"><span>源码</span></a>
+        </div>
+      </li>
+
+      <li class="prod" data-reveal>
+        <span class="prod__num">08</span>
+        <h3 class="prod__name">UnityEditor 6</h3>
+        <div class="prod__meta">
+          <p class="prod__desc">UnityEditor6000.0.58f1-Installer-Windows-AMD64</p>
+          <ul class="prod__stack">
+            <li>Mirror</li>
+          </ul>
+        </div>
+        <div class="prod__acts">
+          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/UnityEditor6000.0.58f1-Installer-Windows-AMD64-Mirror"><span>镜像</span></a>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</section>
+<section class="section section--wash" id="studio">
+  <div class="wrap studio">
+    <div class="studio__col">
+
+      <h2 class="studio__title" data-reveal style="--d:1">
+        Small leads to big
+      </h2>
+    </div>
+
+    <div class="studio__col studio__col--body">
+      <p class="studio__lede" data-reveal style="--d:2">
+        Syfice 由两个计算机爱好者在 2025 年夏天成立
+      </p>
+      <p class="studio__body" data-reveal style="--d:3">
+        谨记我们的九年级时光，以及图书楼四楼。那个时候我们还在做大富翁游戏，一切都是那么美好，可惜世界上不存在乌托邦，而我们的道路也将越走越长。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 联系 ============================ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <a class="contact__mail" href="mailto:sy4ce@proton.me" data-reveal data-magnetic>
+      sy4ce@proton.me
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ 页脚 ============================ -->
+<footer class="foot">
+  <div class="wrap foot__inner">
+    <div class="foot__brand">
+      <img src="logo.png" alt="" width="26" height="26">
+      <span>Syfice</span>
+    </div>
+
+    <nav class="foot__nav" aria-label="页脚">
+      <a href="https://github.com/sy4ce" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+
+    <div class="foot__legal">
+      <span>© <span id="year">2026</span> Syfice / Syφce</span>
+      <span class="foot__clock"><em id="clock">--:--</em> <span id="clock-zone">CST</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
