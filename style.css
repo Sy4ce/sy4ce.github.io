@@ -54,6 +54,8 @@ body{
   font-size:clamp(15px,1.05vw,17px);
   line-height:1.6;
   letter-spacing:-.005em;
+  /* 让拉丁与汉字之间自动留出气口，汉字标点也不会再顶到行首 */
+  text-autospace:normal;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   overflow-x:hidden;
@@ -85,6 +87,28 @@ em{ font-style:normal; }
   padding-inline:var(--gut);
 }
 
+/* --------------------------- masked line reveal --------------------------
+   The inner span slides up from under its own clip box. `--mask-pad` buys
+   room for descenders, and the matching negative margin gives it back, so
+   the padding never moves anything — it is free to be generous.
+
+   The travel has to add the padding back on top of 100%, otherwise the top
+   of the span peeks through the padding before the reveal starts.
+   `--stagger` / `--delay` are set by whoever owns the group.            */
+.mask{
+  --mask-pad:.1em;
+  display:block; overflow:hidden;
+  padding-bottom:var(--mask-pad);
+  margin-bottom:calc(var(--mask-pad) * -1);
+}
+.mask__in{
+  display:block;
+  transition:transform 1.05s var(--ease-out), opacity .55s var(--ease);
+  transition-delay:calc(var(--d,0) * var(--stagger,90ms) + var(--delay,0ms));
+}
+.js .mask__in{ transform:translateY(calc(100% + var(--mask-pad) + .06em)); opacity:0; }
+.mask.is-in .mask__in{ transform:none; opacity:1; }
+
 /* ------------------------------- grain ---------------------------------- */
 .grain{
   position:fixed; inset:-50%; z-index:1; pointer-events:none;
@@ -109,6 +133,17 @@ em{ font-style:normal; }
   border-bottom-color:var(--line);
 }
 .nav.is-hidden{ transform:translateY(-101%); }
+
+/* 阅读进度：一条压在导航下边线上的发丝 */
+.nav__bar{
+  position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  overflow:hidden; pointer-events:none;
+}
+.nav__bar i{
+  display:block; width:100%; height:100%;
+  background:var(--ink);
+  transform:scaleX(0); transform-origin:left;
+}
 
 .nav__inner{
   max-width:var(--maxw); margin-inline:auto;
@@ -209,17 +244,9 @@ em{ font-style:normal; }
   margin-bottom:clamp(32px,5vh,64px);
 }
 /* each line is its own mask; the inner span slides up from under it */
-.hero__title .line{
-  display:block; overflow:hidden;
-  padding-bottom:.06em; margin-bottom:-.06em;   /* room for descenders */
-}
-.hero__title .line__in{
-  display:block;
-  transition:transform 1.15s var(--ease-out), opacity .6s var(--ease);
-  transition-delay:calc(var(--d,0) * 110ms + 100ms);
-}
-.js .hero__title .line__in{ transform:translateY(105%); opacity:0; }
-.hero__title .line__in.is-in{ transform:none; opacity:1; }
+.hero__title{ --stagger:110ms; --delay:120ms; }
+.hero__title .mask{ --mask-pad:.075em; }
+.hero__title .mask__in{ transition-duration:1.15s, .6s; }
 .hero__title em{ font-weight:900; letter-spacing:-.05em; display:inline-block; }
 
 .hero__lede{
@@ -234,45 +261,64 @@ em{ font-style:normal; }
 .section{ padding-block:var(--sec); position:relative; }
 .section--wash{ background:var(--wash); border-block:1px solid var(--line); }
 
+/* 只有一条分隔线：shead 的 border-bottom 就是列表的开场线，
+   .prods 不再重复画一条（两条线隔 80px 干瞪眼是最常见的排版事故） */
 .shead{
-  display:grid; grid-template-columns:auto minmax(0,1fr);
-  gap:clamp(20px,4vw,64px); align-items:start;
-  padding-bottom:clamp(36px,5vw,64px);
+  padding-bottom:clamp(28px,3.6vw,48px);
   border-bottom:1px solid var(--line);
-  margin-bottom:clamp(44px,6vw,92px);
-}
-.shead__num{
-  font-size:13px; font-weight:500; letter-spacing:.14em;
-  color:var(--ink-3); padding-top:.55em;
+  margin-bottom:clamp(36px,4.6vw,72px);
 }
 .shead__title{
   font-size:clamp(38px,6vw,104px);
   font-weight:200; line-height:.94; letter-spacing:-.04em;
+  text-wrap:balance;
 }
+.shead__title .mask{ --mask-pad:.1em; }
 
 /* ============================== PRODUCTS ================================ */
-.prods{ border-top:1px solid var(--line); }
-
+/* 六列定宽：列位置由模板决定，不再由内容决定。
+   之前 acts 是 auto 列，两个按钮的行会把「描述」整列往左推 39px，
+   于是第 04/05 行的描述跟别行对不齐。现在每列都是 1fr，纹丝不动。 */
 .prod{
+  position:relative;
   display:grid;
-  grid-template-columns:auto minmax(0,1fr) minmax(0,.9fr) auto;
+  grid-template-columns:repeat(6, minmax(0, 1fr));
   gap:clamp(16px,3vw,56px);
-  align-items:center;
+  align-items:baseline;               /* 名称与描述共享首行基线 */
   padding:clamp(22px,2.6vw,34px) 0;
   border-bottom:1px solid var(--line);
 }
+.prod__num  { grid-column:1 / 2; }
+.prod__name { grid-column:2 / 4; }
+.prod__meta { grid-column:4 / 6; }
+.prod__acts { grid-column:6 / 7; align-self:center; justify-content:flex-end; }
+
+/* 悬停时把行底那条发丝线描成实墨色 —— 比整行变色克制，也更像印刷品 */
+.prod::after{
+  content:''; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:var(--ink);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .65s var(--ease-out);
+}
+.prod:hover::after{ transform:scaleX(1); }
+
 .prod__num{
   font-size:12.5px; font-weight:500; letter-spacing:.14em; color:var(--ink-3);
+  font-variant-numeric:tabular-nums;
+  transition:color .4s var(--ease);
 }
+.prod:hover .prod__num{ color:var(--ink); }
 .prod__name{
   font-size:clamp(21px,2.5vw,38px);
   font-weight:400; letter-spacing:-.03em; line-height:1.1;
   transition:transform .5s var(--ease-out);
 }
 .prod:hover .prod__name{ transform:translateX(.12em); }
-/* .prod__meta 本身没有样式，只是把「描述 + 技术栈标签」捆成网格的第三列 */
+/* .prod__meta 本身没有样式，只是把「描述 + 技术栈标签」捆成网格的第四列 */
 .prod__desc{
-  font-size:clamp(14px,1vw,16px); color:var(--ink-2); line-height:1.65;
+  font-size:clamp(14px,1vw,16px); color:var(--ink-2);
+  line-height:1.75;                    /* 汉字比拉丁需要更松的行距 */
+  text-wrap:pretty;
 }
 .prod__stack{
   display:flex; flex-wrap:wrap; gap:6px;
@@ -297,18 +343,33 @@ em{ font-style:normal; }
 }
 .studio__col--body{ padding-top:.6em; }
 /* 汉字是全角，负字距会让字符粘连；行高也要比拉丁松，否则上下行顶在一起 */
+/* 不设 text-wrap:balance —— 它按行长均衡断行，会把 "leads to" 拆开，
+   反而读不通。默认的「尽量填满再断」在这里是对的。 */
 .studio__title{
   font-size:clamp(36px,5.2vw,86px);
   font-weight:400; line-height:1.16; letter-spacing:0; margin-top:.25em;
 }
+/* 整块一起上滑：标题会折行，逐行切分反而会写死断行位置 */
+.studio__title .mask{ --mask-pad:.22em; }
 .studio__lede{
   font-size:clamp(17px,1.5vw,23px); font-weight:400; line-height:1.7;
   letter-spacing:0; color:var(--ink);
+  text-wrap:pretty;
 }
 .studio__body{
   margin-top:clamp(20px,2.4vw,32px);
   font-size:clamp(14.5px,1.05vw,16.5px); color:var(--ink-2); line-height:1.75;
   max-width:56ch;
+  text-wrap:pretty;
+}
+/* 落款不该靠三个 <br> 撑开，那是缩进不是排版 */
+.studio__sign{
+  margin-top:clamp(30px,3.6vw,48px);
+  padding-top:clamp(16px,1.9vw,24px);
+  border-top:1px solid var(--line);
+  max-width:56ch;
+  font-size:12.5px; font-weight:500; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ink-3);
 }
 
 /* ============================ CONTACT =================================== */
@@ -321,6 +382,11 @@ em{ font-style:normal; }
   font-size:clamp(26px,6.6vw,120px);
   font-weight:200; letter-spacing:-.045em; line-height:1.05;
   overflow-wrap:anywhere;
+}
+/* 磁吸作用在内层 span 上：外层锚点留着做入场位移，
+   两者抢同一个 transform 的话，先到的那个会输 */
+.contact__mail span{
+  display:inline-block;
   transition:transform .7s var(--ease-out);
 }
 .contact__mail::after{
@@ -329,7 +395,6 @@ em{ font-style:normal; }
   transform:scaleX(0); transform-origin:left;
   transition:transform .7s var(--ease-out);
 }
-.contact__mail:hover{ transform:translateX(.015em); }
 .contact__mail:hover::after{ transform:scaleX(1); }
 
 /* ============================= FOOTER =================================== */
@@ -372,11 +437,19 @@ em{ font-style:normal; }
 .menu.is-open{ opacity:1; visibility:visible; }
 .menu__links{ display:flex; flex-direction:column; }
 .menu__links a{
+  position:relative;
   display:flex; align-items:baseline; gap:18px;
   font-size:clamp(34px,10vw,60px); font-weight:300; letter-spacing:-.035em;
-  padding:14px 0; border-bottom:1px solid var(--line);
+  padding:14px 0; border-bottom:1px solid transparent;
   opacity:0; transform:translateY(22px);
   transition:opacity .5s var(--ease-out), transform .5s var(--ease-out), color .3s;
+}
+/* 分隔线跟着文字一起从左边画出来，比直接淡入有意思 */
+.menu__links a::after{
+  content:''; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:var(--line);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .75s var(--ease-out);
 }
 .menu.is-open .menu__links a{ opacity:1; transform:none; }
 .menu.is-open .menu__links a:nth-child(1){ transition-delay:.06s }
@@ -384,6 +457,10 @@ em{ font-style:normal; }
 .menu.is-open .menu__links a:nth-child(3){ transition-delay:.18s }
 .menu.is-open .menu__links a:nth-child(4){ transition-delay:.24s }
 .menu.is-open .menu__links a:nth-child(5){ transition-delay:.30s }
+.menu.is-open .menu__links a::after{
+  transform:scaleX(1);
+  transition-delay:calc(.14s + var(--i,0) * .06s);
+}
 .menu__links em{ font-size:12.5px; font-weight:500; letter-spacing:.14em; color:var(--ink-3); }
 .menu__foot{ margin-top:auto; padding-top:40px; font-size:14px; color:var(--ink-2); }
 
@@ -397,13 +474,30 @@ em{ font-style:normal; }
 [data-reveal].is-in{ opacity:1; transform:none; }
 
 @media (prefers-reduced-motion:reduce){
-  [data-reveal]{ opacity:1 !important; transform:none !important; transition:none !important; }
+  [data-reveal], .mask__in{
+    opacity:1 !important; transform:none !important; transition:none !important;
+  }
   *{ transition-duration:.01ms !important; animation-duration:.01ms !important; }
 }
 
 /* ============================ RESPONSIVE ================================ */
 @media (max-width:1024px){
   .studio{ grid-template-columns:1fr; }
+}
+
+/* 六列在 1200px 以下就装不下两个按钮了：每列只剩不到 152px，
+   而 .btn 有 overflow:hidden，min-width:auto 会退化成 0 —— 按钮不会换行，
+   只会把「网站」「源码」挤在一起并把字裁掉。所以这个区间换成
+   「序号 + 名称 + 操作」一行、描述另起一行铺满。 */
+@media (min-width:761px) and (max-width:1199px){
+  .prod{
+    grid-template-columns:auto minmax(0,1fr) auto;
+    row-gap:14px;
+  }
+  .prod__num  { grid-area:1 / 1; }
+  .prod__name { grid-area:1 / 2; }
+  .prod__acts { grid-area:1 / 3; align-self:center; }
+  .prod__meta { grid-area:2 / 2 / 3 / 4; max-width:58ch; }
 }
 
 @media (max-width:760px){
@@ -418,10 +512,14 @@ em{ font-style:normal; }
   /* 产品行折成两列：序号靠左，名称/描述/按钮依次排到右侧 */
   .prod{
     grid-template-columns:auto minmax(0,1fr);
-    row-gap:10px; align-items:baseline;
+    row-gap:10px;
   }
-  .prod__name, .prod__meta, .prod__acts{ grid-column:2; }
-  .prod__acts{ margin-top:6px; }
+  .prod__num{ grid-column:1 / 2; }
+  .prod__name, .prod__meta, .prod__acts{ grid-column:2 / -1; }
+  .prod__acts{
+    align-self:auto; justify-content:flex-start;
+    margin-top:6px;
+  }
 
   .foot__inner{ grid-template-columns:1fr; }
   .foot__nav{ flex-wrap:wrap; gap:16px 24px; }

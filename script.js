@@ -24,7 +24,7 @@
      1. Reveal on scroll
      ==================================================================== */
   function initReveal() {
-    var items = $$('[data-reveal]');
+    var items = $$('[data-reveal],[data-mask]');
     if (!items.length) return;
 
     if (reduced || !('IntersectionObserver' in window)) {
@@ -33,29 +33,42 @@
     }
 
     // Hero content animates on load, not on scroll — and it MUST bypass the
-    // observer: the headline lines start translated fully below their own
-    // overflow:hidden mask, which the observer reads as "clipped, never
-    // visible". Observing them would deadlock and the hero would stay blank.
-    var deferred = [];
+    // observer: a masked line starts translated fully below its own
+    // overflow:hidden clip box, which the observer reads as "never visible".
+    // Observing it would deadlock and the hero would stay blank.
+    var deferred = items.filter(function (el) { return el.closest('.hero'); });
+    var observed = items.filter(function (el) { return deferred.indexOf(el) === -1; });
 
-    items.forEach(function (el) {
-      if (el.closest('.hero')) deferred.push(el);
-    });
-
-    deferred.forEach(function (el) {
-      window.requestAnimationFrame(function () {
-        window.requestAnimationFrame(function () { el.classList.add('is-in'); });
+    var raf = window.requestAnimationFrame || function (f) { return window.setTimeout(f, 16); };
+    raf(function () {
+      raf(function () {
+        deferred.forEach(function (el) { el.classList.add('is-in'); });
       });
     });
 
-    var observed = items.filter(function (el) { return deferred.indexOf(el) === -1; });
     if (!observed.length) return;
 
     var io = new IntersectionObserver(function (entries) {
+      var batch = [];
+
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
-        e.target.classList.add('is-in');
         io.unobserve(e.target);
+        batch.push(e.target);
+      });
+      if (!batch.length) return;
+
+      // Rank the batch in document order so a group arriving together ripples
+      // instead of snapping in as one slab. Author-set --d always wins.
+      batch.sort(function (a, b) {
+        return a.compareDocumentPosition(b) & 4 /* FOLLOWING */ ? -1 : 1;
+      });
+
+      batch.forEach(function (el, i) {
+        if (!el.style.getPropertyValue('--d')) {
+          el.style.setProperty('--d', Math.min(i, 5));
+        }
+        el.classList.add('is-in');
       });
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
 
@@ -69,8 +82,16 @@
     var nav = $('#nav');
     if (!nav) return;
 
+    var bar = $('#progress');
     var last = window.pageYOffset;
     var ticking = false;
+    var range = 0;
+
+    // Cached so the scroll handler never forces a layout while it is writing
+    // classes — reading scrollHeight every frame is how you get jank.
+    function measure() {
+      range = document.documentElement.scrollHeight - window.innerHeight;
+    }
 
     function update() {
       var y = window.pageYOffset;
@@ -85,6 +106,11 @@
         nav.classList.remove('is-hidden');
       }
 
+      if (bar) {
+        var p = range > 0 ? Math.min(1, Math.max(0, y / range)) : 0;
+        bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+      }
+
       last = y;
       ticking = false;
     }
@@ -95,6 +121,12 @@
       window.requestAnimationFrame(update);
     }, { passive: true });
 
+    window.addEventListener('resize', function () {
+      measure();
+      if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+    }, { passive: true });
+
+    measure();
     update();
   }
 
@@ -136,9 +168,10 @@
     });
 
     // close if the viewport grows past the mobile breakpoint
-    window.matchMedia('(min-width: 761px)').addEventListener('change', function (e) {
-      if (e.matches && open) setOpen(false);
-    });
+    var mq = window.matchMedia('(min-width: 761px)');
+    var onChange = function (e) { if (e.matches && open) setOpen(false); };
+    if (mq.addEventListener) mq.addEventListener('change', onChange);
+    else if (mq.addListener) mq.addListener(onChange);   // Safari < 14
   }
 
   /* ====================================================================

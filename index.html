@@ -41,13 +41,14 @@
       <span></span><span></span>
     </button>
   </div>
+  <span class="nav__bar" aria-hidden="true"><i id="progress"></i></span>
 </header>
 
 <div class="menu" id="menu" hidden>
   <nav class="menu__links" aria-label="移动导航">
-    <a href="#products"><em>01</em>Products</a>
-    <a href="#studio"><em>02</em>Studio</a>
-    <a href="#contact"><em>03</em>Contact</a>
+    <a href="#products" style="--i:0"><em>01</em>Products</a>
+    <a href="#studio" style="--i:1"><em>02</em>Studio</a>
+    <a href="#contact" style="--i:2"><em>03</em>Contact</a>
   </nav>
   <div class="menu__foot">
     <a href="114514">Make binaries flexible</a>
@@ -66,9 +67,9 @@
     <span class="hero__est" data-reveal>Est. 2025</span>
 
     <h1 class="hero__title">
-      <span class="line"><span class="line__in" data-reveal style="--d:0">Make</span></span>
-      <span class="line"><span class="line__in" data-reveal style="--d:1"><em data-magnetic>binaries</em></span></span>
-      <span class="line"><span class="line__in" data-reveal style="--d:2">flexible</span></span>
+      <span class="mask" data-mask><span class="mask__in" style="--d:0">Make</span></span>
+      <span class="mask" data-mask><span class="mask__in" style="--d:1"><em data-magnetic>binaries</em></span></span>
+      <span class="mask" data-mask><span class="mask__in" style="--d:2">flexible</span></span>
     </h1>
 
     <p class="hero__lede" data-reveal style="--d:3">
@@ -81,7 +82,9 @@
 <section class="section" id="products">
   <div class="wrap">
     <header class="shead">
-      <h2 class="shead__title" data-reveal style="--d:1">Products</h2>
+      <h2 class="shead__title">
+        <span class="mask" data-mask><span class="mask__in">Products</span></span>
+      </h2>
     </header>
 
     <ul class="prods">
@@ -145,7 +148,7 @@
         </div>
         <div class="prod__acts">
           <a class="btn btn--sm" href="https://paster-sy4ce.azurewebsites.net" target="_blank" rel="noopener noreferrer"><span>网站</span></a>
-          <a class="btn btn--sm btn--ghost" href="https://github.com/sy4ce/paster-webapp"><span>源码</span></a>
+          <a class="btn btn--sm btn--ghost" href="https://github.com/sy4ce/paster-webapp" target="_blank" rel="noopener noreferrer"><span>源码</span></a>
         </div>
       </li>
 
@@ -160,8 +163,8 @@
           </ul>
         </div>
         <div class="prod__acts">
-          <a class="btn btn--sm" href="https://sms.ntoskrnl2333.cn"><span>网站</span></a>
-          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/SMS_Watcher_Android"><span>源码</span></a>
+          <a class="btn btn--sm" href="https://sms.ntoskrnl2333.cn" target="_blank" rel="noopener noreferrer"><span>网站</span></a>
+          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/SMS_Watcher_Android" target="_blank" rel="noopener noreferrer"><span>源码</span></a>
         </div>
       </li>
 
@@ -176,7 +179,7 @@
           </ul>
         </div>
         <div class="prod__acts">
-          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/enostorg"><span>源码</span></a>
+          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/enostorg" target="_blank" rel="noopener noreferrer"><span>源码</span></a>
         </div>
       </li>
 
@@ -191,7 +194,7 @@
           </ul>
         </div>
         <div class="prod__acts">
-          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/LexicStrike"><span>源码</span></a>
+          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/LexicStrike" target="_blank" rel="noopener noreferrer"><span>源码</span></a>
         </div>
       </li>
 
@@ -205,7 +208,7 @@
           </ul>
         </div>
         <div class="prod__acts">
-          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/UnityEditor6000.0.58f1-Installer-Windows-AMD64-Mirror"><span>镜像</span></a>
+          <a class="btn btn--sm btn--ghost" href="https://github.com/Ntoskrnl2333/UnityEditor6000.0.58f1-Installer-Windows-AMD64-Mirror" target="_blank" rel="noopener noreferrer"><span>镜像</span></a>
         </div>
       </li>
 
@@ -216,18 +219,19 @@
   <div class="wrap studio">
     <div class="studio__col">
 
-      <h2 class="studio__title" data-reveal style="--d:1">
-        Small leads to big
+      <h2 class="studio__title">
+        <span class="mask" data-mask><span class="mask__in">Small leads to big</span></span>
       </h2>
     </div>
 
     <div class="studio__col studio__col--body">
-      <p class="studio__lede" data-reveal style="--d:2">
+      <p class="studio__lede" data-reveal style="--d:0">
         Syfice 由两个计算机爱好者在 2025 年夏天成立
       </p>
-      <p class="studio__body" data-reveal style="--d:3">
-        谨记我们的九年级时光，以及图书楼四楼。那个时候我们还在做大富翁游戏，一切都是那么美好，可惜世界上不存在乌托邦，而我们的道路也将越走越长。<br /><br /><br />Fandet & Ntoskrnl
+      <p class="studio__body" data-reveal style="--d:1">
+        谨记我们的九年级时光，以及图书楼四楼。那个时候我们还在做大富翁游戏，一切都是那么美好，可惜世界上不存在乌托邦，而我们的道路也将越走越长。
       </p>
+      <p class="studio__sign" data-reveal style="--d:2">Fandet &amp; Ntoskrnl</p>
     </div>
   </div>
 </section>
@@ -235,8 +239,8 @@
 <!-- ============================ 联系 ============================ -->
 <section class="contact" id="contact">
   <div class="wrap">
-    <a class="contact__mail" href="mailto:sy4ce@proton.me" data-reveal data-magnetic>
-      sy4ce@proton.me
+    <a class="contact__mail" href="mailto:sy4ce@proton.me" data-reveal>
+      <span data-magnetic>sy4ce@proton.me</span>
     </a>
   </div>
 </section>
