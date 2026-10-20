@@ -1,0 +1,8 @@
+[
+  {
+    "path": "GodlikeSignBypass.md",
+    "date": "2026-10-20",
+    "title": "网易大神 v4.24.1 签名校验绕过分析",
+    "desc": "包含两层校验的绕过：本地 DatManager 与服务端 URS packageSign。文末附带其 native 修补位置"
+  }
+]
