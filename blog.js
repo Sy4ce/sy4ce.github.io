@@ -318,7 +318,7 @@
       dot.textContent = '·';
 
       var read = document.createElement('span');
-      read.textContent = '约 ' + readingMinutes(markdown) + ' 分钟';
+      read.textContent = '约 ' + readingMinutes(markdown) * 4 + ' 分钟';
 
       metaEl.appendChild(dot);
       metaEl.appendChild(read);
