@@ -1,8 +1,14 @@
 [
   {
     "path": "GodlikeSignBypass.md",
-    "date": "2026-10-20",
+    "date": "2026-10-30",
     "title": "网易大神 v4.24.1 签名校验绕过分析",
     "desc": "网易大神app逆向笔记，包含两层校验的绕过：本地DatManager与服务端URS packageSign，附带patch方法以及fridahook脚本"
+  },
+  {
+    "path": "contacts.md",
+    "date": "2026-10-20",
+    "title": "联系方式",
+    "desc": "与博客作者取得联系、申请下架侵权文章或发送DCMA等"
   }
 ]
